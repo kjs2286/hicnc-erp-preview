@@ -1,0 +1,12 @@
+{
+  "project": "hicnc-erp",
+  "type": "browser-local prototype",
+  "files": [
+    ".nojekyll",
+    "design-system/index.html",
+    "design-system/reference/public-auth-theme-tokens.json",
+    "index.html"
+  ],
+  "privateMeetingMaterialsIncluded": false,
+  "sharedDatabase": false
+}
