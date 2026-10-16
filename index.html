@@ -1757,6 +1757,16 @@ main[data-page=students] .fx-student-table tr:hover td:first-child { background:
 @media(max-width:720px) { .fx-work-columns { grid-template-columns:1fr; gap:28px; } .fx-work-aside { grid-template-columns:1fr 1fr; gap:20px; } .fx-task-meta .badge { display:inline-flex; } .fx-overview { grid-template-columns:repeat(2,minmax(0,1fr)); } .fx-overview-stat:nth-child(3) { border-left:0; border-top:1px solid var(--hair); } .fx-overview-stat:nth-child(4) { border-top:1px solid var(--hair); } .fx-work-head { align-items:flex-start; flex-wrap:wrap; } .fx-work-head .actions { margin-left:auto; } .fx-directory { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:560px) { main { padding:24px 18px 56px; } .page-head h2 { font-size:25px; } .page-head { margin-bottom:22px; } .page-head .actions { margin-top:7px; } .card { padding:18px; } .fx-work-head { margin-bottom:22px; gap:16px; } .fx-work-head .actions { margin-left:0; width:100%; } .fx-work-head .actions .btn { flex:1; justify-content:center; } .fx-work-head h2 { font-size:26px; } .fx-overview { margin-bottom:28px; } .fx-overview-stat { padding:17px 16px; } .fx-overview-stat>span { font-size:12px; } .fx-overview-stat p { font-size:11px; } .fx-work-aside { grid-template-columns:1fr; gap:24px; } .fx-task-meta { gap:8px; } .fx-task-meta .badge { display:none; } .fx-today-task { gap:8px; min-height:74px; } .fx-today-task strong { font-size:13px; } .fx-task-symbol { width:24px; } .fx-task-filters { gap:3px; } .fx-task-filters button { padding:6px 8px; font-size:12px; } .fx-shortcuts>div:last-child { gap:8px 22px; } .fx-shortcuts>div>a { font-size:12px; } .fx-list-toolbar { gap:10px; flex-wrap:wrap; padding:12px 0; min-height:66px; } .fx-list-search { width:100%; order:0; } .fx-list-scope { order:1; } .fx-list-toolbar>.fx-text-link { order:2; font-size:12px; } .fx-list-count { order:3; } .fx-student-tabs { gap:2px; flex-wrap:nowrap; justify-content:space-between; } .fx-student-tabs button { padding:7px 6px; font-size:12px; white-space:nowrap; } .fx-student-tabs button span { margin-left:3px; font-size:10px; } .fx-students-head { gap:8px 12px; } .fx-students-head .actions .btn { flex:1; justify-content:center; } .fx-students-head .fx-text-link { font-size:12px; } .fx-section-title h3 { font-size:15px; } .hc-finder { grid-template-columns:1fr; } .fx-directory { gap:22px; } }
 
+/* Independent disclosures: preserve each group across navigation and reload. */
+.fx-group-head .fx-nav-label { flex:1; min-width:0; }
+.fx-group-chevron { display:flex; flex:0 0 16px; color:var(--muted); transition:transform 220ms ease; }
+.fx-group.is-open>.fx-group-head .fx-group-chevron { transform:rotate(90deg); }
+.fx-group-panel { display:grid; grid-template-rows:0fr; opacity:0; transition:grid-template-rows 220ms ease,opacity 180ms ease; }
+.fx-group.is-open>.fx-group-panel { grid-template-rows:1fr; opacity:1; }
+.fx-group-panel-inner { min-height:0; overflow:hidden; }
+.fx-group-head:focus-visible { outline:2px solid var(--muted); outline-offset:2px; }
+@media (prefers-reduced-motion:reduce) { .fx-group-chevron,.fx-group-panel { transition:none; } }
+
 /* Conversation-first Pome. Meta's official Messenger product capture informed
    the small identity, neutral/blue bubbles and rounded composer. Scoped only. */
 #pome{--pc-accent:#386af4;--pc-accent-hover:#2457df;--pc-incoming:#f0f2f5;--pc-ink:#23262d;--pc-muted:#8a8d96;position:fixed;right:22px;bottom:18px;z-index:40;pointer-events:none;font-family:var(--font,sans-serif)}
@@ -1926,6 +1936,8 @@ main[data-page=students] .fx-student-table tr:hover td:first-child { background:
 /* Small status badges; no decorative accent lines or flashing indicators. */
 .hc-notice-badge{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:19px;height:18px;padding:0 5px;margin-left:auto;border-radius:10px;background:#f7e9ed;color:#ae2840;font-size:10px;font-weight:650;font-variant-numeric:tabular-nums;line-height:18px;letter-spacing:0}.hc-notice-badge.urgent{background:#c92c44;color:#fff}.hc-notice-dot{display:inline-block;width:6px;height:6px;flex:0 0 6px;background:#c92c44;border-radius:50%;margin-left:auto}.fx-group-head{position:relative}.fx-group-items a>span:first-child{min-width:0}.fx-group-items .hc-notice-badge{margin-right:2px}.fx-compact .hc-notice-dot{position:absolute;right:6px;top:7px}.m-menu{position:relative}.hc-menu-notice{position:absolute;right:3px;top:3px;width:7px;height:7px;border-radius:50%;background:#c92c44;box-shadow:0 0 0 2px var(--panel)}#msheet .ms-body h4{display:flex;align-items:center;gap:10px}#msheet .hc-notice-dot{margin-left:0}#msheet .hc-notice-badge{height:20px;min-width:20px;line-height:20px;font-size:11px}#hc-find-results a .hc-notice-badge{margin-left:6px}.fx-directory a{display:flex;align-items:center;gap:10px}.hc-notice-badge:empty{display:none}
 [data-theme="dark"] .hc-notice-badge:not(.urgent){background:#49252f;color:#f0b4c0}
+
+.fx-group-head .hc-notice-dot{margin-left:0}
 </style></head>
 <body>
 <header class="topbar" id="topbar">
@@ -10172,16 +10184,27 @@ const FX_FRIENDLY_GROUPS={
  '조직·성과':'업무와 팀','AI·보고서':'기록과 보고서','설정·검토':'관리 설정'
 };
 const fxGroupLabel=name=>FX_FRIENDLY_GROUPS[name]||name;
+A.fxToggleGroup=d=>{
+ const button=document.querySelector(`.fx-group-head[data-group-index="${d.groupIndex}"]`);
+ if(!button)return;
+ const expanded=button.getAttribute('aria-expanded')!=='true',section=button.closest('.fx-group'),panel=document.getElementById(button.getAttribute('aria-controls'));
+ S.navGroups=S.navGroups||{};S.navGroups[d.role]=S.navGroups[d.role]||{};
+ S.navGroups[d.role][button.dataset.navGroup]=expanded;Store.save();
+ section.classList.toggle('is-open',expanded);button.setAttribute('aria-expanded',String(expanded));
+ panel.setAttribute('aria-hidden',String(!expanded));panel.inert=!expanded;
+};
 fxSidebar=rt=>{
  const nav=fbNav(rt.role);if(!nav)return '';
  const role=rt.role,selected=hcPageGroup(rt)?.[0],compact=!!ui.fxCompact;
+ S.navGroups=S.navGroups||{};if(!S.navGroups[role])S.navGroups[role]=Object.fromEntries(nav.map(([name])=>[name,name===selected]));
  return `<aside class="fx-sidebar sidebar fx-refined-side" aria-label="업무 메뉴">
   <a class="fx-brand" href="#/${role}/${DEFAULT_PAGE[role]}"><span class="fx-brand-mark">Hi</span><div><strong>하이씨앤씨</strong><small>학원운영비서</small></div></a>
   <div class="fx-context"><label class="fx-branch-label">${fxIcon('building',16)}<select aria-label="관 선택" data-change="hcBranch">${[['ALL','본사 · 전체 관'],...S.branches.map(b=>[b.id,b.name])].map(([id,label])=>`<option value="${id}" ${id===S.branch?'selected':''}>${U.esc(label)}</option>`).join('')}</select></label></div>
   <div class="fx-nav-utility"><button data-action="hcFind" title="기능 찾기">${fxIcon('search',18)}<span class="fx-nav-label">기능 찾기</span><kbd>⌘ K</kbd></button>${role==='admin'?`<a href="#/admin/workspace" class="${rt.page==='workspace'?'on':''}" ${rt.page==='workspace'?'aria-current="page"':''} title="업무 홈">${fxNavIcon('home',18)}<span class="fx-nav-label">업무 홈</span></a>`:''}</div>
-  <div class="fx-side-scroll"><p class="fx-nav-caption">학원 업무</p>${nav.map(([name,items])=>{
-   const active=name===selected,icon=FX_GROUP_ICONS[name]||'book';
-   return `<section class="fx-group ${active?'selected':''}"><a class="fx-group-head" href="#/${role}/${items[0][0]}" title="${U.esc(fxGroupLabel(name))}" ${active?'aria-current="true"':''}>${fxNavIcon(icon,18)}<span class="fx-nav-label">${fxGroupLabel(name)}</span></a>${active&&!compact?`<nav class="fx-group-items" aria-label="${U.esc(name)}">${items.map(([p,,label])=>`<a href="#/${role}/${p}" class="${isOn(rt,p)?'on':''}" ${isOn(rt,p)?'aria-current="page"':''}><span>${label}</span>${badgeFor(p)}</a>`).join('')}</nav>`:''}</section>`;
+  <div class="fx-side-scroll"><p class="fx-nav-caption">학원 업무</p>${nav.map(([name,items],index)=>{
+   const active=name===selected,icon=FX_GROUP_ICONS[name]||'book',open=S.navGroups[role][name]===true,panelId=`fx-nav-${role}-${index}`;
+   const label=`${fxNavIcon(icon,18)}<span class="fx-nav-label">${fxGroupLabel(name)}</span>`;
+   return `<section class="fx-group ${active?'selected':''} ${open?'is-open':''}">${compact?`<a class="fx-group-head" data-nav-group="${U.esc(name)}" href="#/${role}/${items[0][0]}" title="${U.esc(fxGroupLabel(name))}">${label}</a>`:`<button type="button" class="fx-group-head" data-action="fxToggleGroup" data-role="${role}" data-group-index="${index}" data-nav-group="${U.esc(name)}" aria-expanded="${open}" aria-controls="${panelId}">${label}<span class="fx-group-chevron" aria-hidden="true">${fxIcon('chevronright',16)}</span></button><div id="${panelId}" class="fx-group-panel" aria-hidden="${!open}" ${open?'':'inert'}><div class="fx-group-panel-inner"><nav class="fx-group-items" aria-label="${U.esc(name)}">${items.map(([p,,label])=>`<a href="#/${role}/${p}" class="${isOn(rt,p)?'on':''}" ${isOn(rt,p)?'aria-current="page"':''}><span>${label}</span>${badgeFor(p)}</a>`).join('')}</nav></div></div>`}</section>`;
   }).join('')}</div>
   <div class="fx-side-foot"><span class="fx-user-mark">${fxIcon('user',17)}</span><div class="fx-role-picker"><select aria-label="보기 역할 선택" data-change="hcRole">${fbRoles().map(([id,label])=>`<option value="${id}" ${role===id?'selected':''}>${label} 화면</option>`).join('')}</select><small>프로토타입 · 시연 데이터</small></div><button class="fx-collapse fx-side-tools" data-action="hcTools" aria-label="시연 도구" title="시연 도구">${fxIcon('more',17)}</button><button class="fx-collapse" data-action="fxCollapse" aria-label="${compact?'사이드바 펼치기':'사이드바 접기'}" title="${compact?'사이드바 펼치기':'사이드바 접기'}">${fxIcon(compact?'chevronright':'chevronleft',16)}</button></div>
  </aside>`;
@@ -10833,10 +10856,10 @@ if(typeof document!=='undefined'){
    const page=a.getAttribute('href').split('/')[2];a.querySelectorAll('.tag,.hc-notice-badge').forEach(x=>x.remove());a.insertAdjacentHTML('beforeend',hcNoticeBadge(page));
   });
   root.querySelectorAll('.fx-group-head').forEach(a=>{
-   a.querySelectorAll('.hc-notice-dot').forEach(x=>x.remove());const p=a.getAttribute('href').split('/')[2],group=nav.find(([,items])=>items.some(([id])=>id===p));if(!group)return;
+   a.querySelectorAll('.hc-notice-dot').forEach(x=>x.remove());const group=nav.find(([name])=>name===a.dataset.navGroup);if(!group)return;
    const pending=group[1].filter(([id])=>hcNoticeMap[id]);if(!pending.length)return;
    const message=pending.map(([id,,label])=>label+' '+hcNoticeMap[id].count+'건').join(' · ');
-   a.insertAdjacentHTML('beforeend',`<span class="hc-notice-dot ${pending.some(([id])=>hcNoticeMap[id].urgent)?'urgent':''}" role="img" aria-label="${U.esc(message)}" title="${U.esc(message)}"></span>`);
+   (a.querySelector('.fx-group-chevron')||a).insertAdjacentHTML(a.querySelector('.fx-group-chevron')?'beforebegin':'beforeend',`<span class="hc-notice-dot ${pending.some(([id])=>hcNoticeMap[id].urgent)?'urgent':''}" role="img" aria-label="${U.esc(message)}" title="${U.esc(message)}"></span>`);
   });
   root.querySelectorAll('#msheet .ms-body>section').forEach(section=>{
    const h=section.querySelector('h4');if(!h)return;h.querySelector('.hc-notice-dot')?.remove();const has=[...section.querySelectorAll('.hc-notice-badge')];if(has.length)h.insertAdjacentHTML('beforeend',`<span class="hc-notice-dot" role="img" aria-label="확인할 항목이 있는 메뉴 ${has.length}개"></span>`);
