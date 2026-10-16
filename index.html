@@ -756,7 +756,64 @@ html.tour-on, html.tour-on body { overflow-x: hidden; }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
-<!-- Embedded Pretendard font license
+<script>const HC_OFFICIAL_CAMPUSES=[{"id": "gn", "name": "본관", "phone": "02-2648-7313", "mapUrl": "https://naver.me/F74V1pxz", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/de935be030f2c.png"}, {"id": "bd", "name": "아이비관", "phone": "02-2648-7334", "mapUrl": "https://naver.me/GOPNunF7", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/3ec33420715bf.png"}, {"id": "md", "name": "프리미엄관", "phone": "02-2648-7317", "mapUrl": "https://naver.me/5bVqXURy", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/d24f06ae3e300.png"}, {"id": "ivy-annex", "name": "아이비별관", "phone": "02-2648-5334", "mapUrl": "https://naver.me/GOPNunF7", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/e2295d3ffc62f.png"}, {"id": "campus5", "name": "5관", "phone": "02-6956-7317", "mapUrl": "https://naver.me/5bVHoVxN", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/631c760e96651.png"}, {"id": "foreign", "name": "명덕외고관", "phone": "02-6952-7956", "mapUrl": "https://naver.me/5S9hgmL1", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/3a11f79e30152.png"}, {"id": "campus7", "name": "7관", "phone": "02-6925-7363", "mapUrl": "https://naver.me/GeUsaULo", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/783781fe64aa0.png"}, {"id": "premium1", "name": "8관 프리미엄1관", "phone": "02-6952-7384", "mapUrl": "https://naver.me/5CW72fbh", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/687009171d1e0.png"}, {"id": "gangseo", "name": "강서관", "phone": "02-6958-7313", "mapUrl": "https://naver.me/GEXEZimV", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/9e0bf2bdcf089.png"}, {"id": "acropolis", "name": "아크로폴리스관", "phone": "02-6952-7316", "mapUrl": "https://naver.me/Fsw7zRzk", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/c545817b31d0e.png"}];
+/* Official public campus metadata. Existing IDs and user records remain stable. */
+(function(root){
+ 'use strict';
+ const copy=x=>JSON.parse(JSON.stringify(x));
+ const placeholders={gn:'강남점',bd:'분당점',md:'목동점'};
+ function apply(state,catalog,seedFactory){
+  const byId=new Map((state.branches||[]).map(b=>[b.id,b]));
+  const missing=catalog.filter(c=>!byId.has(c.id));
+  for(const c of catalog){
+   let b=byId.get(c.id);
+   if(!b){b={...copy(c),officialCampus:true,address:'',color:'#87909b'};state.branches.push(b);byId.set(c.id,b);}
+   else {if(!b.name||b.name===placeholders[c.id]||b.officialCampus){b.name=c.name;b.officialCampus=true;}b.phone=c.phone;b.mapUrl=c.mapUrl;if(['서울 강남구 대치동','경기 성남시 분당구 정자동','서울 양천구 목동'].includes(b.address))b.address='';}
+  }
+  // Seed only the new campuses from synthetic fixtures, never copy user-entered
+  // records from another campus and never replace a pre-existing collection.
+  if(missing.length&&seedFactory){
+   const ids=new Set(missing.map(c=>c.id)),fresh=seedFactory(),owned=new Set();
+   for(const values of Object.values(fresh))if(Array.isArray(values))for(const item of values)if(item&&typeof item==='object'&&ids.has(item.branchId)&&item.id)owned.add(item.id);
+   const belongs=item=>item&&typeof item==='object'&&(ids.has(item.branchId)||['studentId','sid','teacherId','classId','roomId'].some(k=>owned.has(item[k])));
+   const codes=new Set((state.students||[]).map(s=>s.code));let nextCode=1000;
+   for(const [key,values]of Object.entries(fresh)){
+    if(key==='branches'||!Array.isArray(values)||!Array.isArray(state[key]))continue;
+    const current=new Set(state[key].filter(x=>x&&typeof x==='object').map(x=>x.id).filter(Boolean));
+    for(const item of values.filter(belongs)){
+     if(item.id&&current.has(item.id))continue;
+     const row=copy(item);
+     if(key==='students'){while(codes.has(String(nextCode)))nextCode++;row.code=String(nextCode++);codes.add(row.code);}
+     state[key].push(row);if(row.id)current.add(row.id);
+    }
+   }
+   if(state.msgBaseline)for(const id of ids)state.msgBaseline[id]=fresh.msgBaseline[id]||0;
+   for(const b of missing){
+    if(state.promoGoal)state.promoGoal[b.id]=70;
+    if(state.hireNeeds)state.hireNeeds[b.id]=[];
+    if(state.aca?.entities&&!state.aca.entities.some(e=>e.branchId===b.id))state.aca.entities.push({id:'entity-'+b.id,branchId:b.id,name:b.name+' 교육사업자',registration:'시연 사업자',account:'시연 정산 계좌',terminal:'시연 단말'});
+   }
+   for(const t of state.teachers.filter(t=>ids.has(t.branchId))){
+    t.grades=t.grades||[];t.joined=t.joined||fresh.seedDate;t.career=t.career||'시연 강사';
+    if(state.mbo)state.mbo[t.id]=[];
+    if(state.multi)state.multi[t.id]={원장:4,동료:4,학생:4,자기:4};
+    if(state.survey)state.survey[t.id]={n:0,avg:0,voice:'평가 기록 없음'};
+   }
+   for(const c of state.classes.filter(c=>ids.has(c.branchId))){if(!c.cap)c.cap=12;if(state.janBase)state.janBase[c.id]=state.students.filter(s=>s.classIds.includes(c.id)&&s.status==='active').length;}
+  }
+  // Refresh only known seed labels; message bodies and history stay untouched.
+  for(const c of catalog){const old=placeholders[c.id],name=byId.get(c.id).name;if(!old)continue;
+   for(const room of state.chatRooms||[])if(room.id==='cs-'+c.id&&room.name===old+' 직원방')room.name=name+' 직원방';
+   for(const entity of state.aca?.entities||[])if(entity.branchId===c.id&&entity.name===old+' 교육사업자')entity.name=name+' 교육사업자';
+  }
+  // Stable catalog order, followed by any campuses a user added themselves.
+  const order=new Map(catalog.map((c,i)=>[c.id,i]));state.branches.sort((a,b)=>(order.get(a.id)??999)-(order.get(b.id)??999));
+  state.campusCatalogVersion='2026-10-17';return state;
+ }
+ root.HcCampusCatalog={apply};if(typeof module!=='undefined')module.exports=root.HcCampusCatalog;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+</script><!-- Embedded Pretendard font license
 Copyright (c) 2021, Kil Hyung-jin (https://github.com/orioncactus/pretendard),
 with Reserved Font Name Pretendard.
 
@@ -1865,6 +1922,10 @@ main[data-page=students] .fx-student-table tr:hover td:first-child { background:
 @media(max-width:540px){.ac-form{grid-template-columns:1fr}.ac-full{grid-column:auto}.ac-tabs{gap:3px;margin-bottom:18px}.ac-tabs a{font-size:11px;padding:7px 9px}.ac-metrics{grid-template-columns:1fr 1fr}.ac-metric strong{font-size:22px}.ac-toolbar{gap:8px}.ac-toolbar>label{min-width:calc(50% - 5px);max-width:none;flex:1}.ac-grid-list,.ac-gallery{grid-template-columns:1fr}.ac-modebar{font-size:10px}.ac-head .actions{width:100%}.ac-sheet{padding:16px}.ac-checks{grid-template-columns:1fr 1fr}}
 .ac-catalog-link{display:flex;align-items:center;justify-content:space-between;font-size:10px;margin-top:9px;color:#656f7b;text-decoration:none}.ac-recipient-list{max-height:330px;overflow:auto;display:grid;gap:2px}.ac-recipient-list>label{display:flex;gap:10px;align-items:center;padding:10px 2px;font-size:12px}.ac-recipient-list small{display:block;font-size:10px;color:#979faa;margin-top:4px}.ac-message-preview{background:#f4f5f7;border-radius:12px;padding:18px;line-height:1.9;font-size:13px;white-space:normal}.ac-message-preview img{display:block;max-width:100%;max-height:220px;border-radius:8px;margin-top:12px}.ac-modebar>a{color:#7c8692;text-decoration:none}.ac-flat td .btn{margin:2px}.ac-flat th{white-space:nowrap}.ac-split>*,.ac-grid-list>*{min-width:0}.ac-catalog-card .btn{font-size:11px}.ac-catalog-card svg{color:#5e6875}.ac-rail .ac-switch{margin:0}
 [data-theme="dark"] .ac-metric,[data-theme="dark"] .ac-sheet,[data-theme="dark"] .ac-catalog-card{background:var(--card);color:var(--text)}[data-theme="dark"] .ac-tabs,[data-theme="dark"] .ac-hint,[data-theme="dark"] .ac-rail{background:var(--bg)}
+
+/* Small status badges; no decorative accent lines or flashing indicators. */
+.hc-notice-badge{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-width:19px;height:18px;padding:0 5px;margin-left:auto;border-radius:10px;background:#f7e9ed;color:#ae2840;font-size:10px;font-weight:650;font-variant-numeric:tabular-nums;line-height:18px;letter-spacing:0}.hc-notice-badge.urgent{background:#c92c44;color:#fff}.hc-notice-dot{display:inline-block;width:6px;height:6px;flex:0 0 6px;background:#c92c44;border-radius:50%;margin-left:auto}.fx-group-head{position:relative}.fx-group-items a>span:first-child{min-width:0}.fx-group-items .hc-notice-badge{margin-right:2px}.fx-compact .hc-notice-dot{position:absolute;right:6px;top:7px}.m-menu{position:relative}.hc-menu-notice{position:absolute;right:3px;top:3px;width:7px;height:7px;border-radius:50%;background:#c92c44;box-shadow:0 0 0 2px var(--panel)}#msheet .ms-body h4{display:flex;align-items:center;gap:10px}#msheet .hc-notice-dot{margin-left:0}#msheet .hc-notice-badge{height:20px;min-width:20px;line-height:20px;font-size:11px}#hc-find-results a .hc-notice-badge{margin-left:6px}.fx-directory a{display:flex;align-items:center;gap:10px}.hc-notice-badge:empty{display:none}
+[data-theme="dark"] .hc-notice-badge:not(.urgent){background:#49252f;color:#f0b4c0}
 </style></head>
 <body>
 <header class="topbar" id="topbar">
@@ -2226,16 +2287,8 @@ function seedData() {
   const TODAY = U.ymd(today);
   const nowMin = now.getHours() * 60 + now.getMinutes();
 
-  const branches = [
-    { id: 'gn', name: '강남점', color: '#0071E3', address: '서울 강남구 대치동' },
-    { id: 'bd', name: '분당점', color: '#34C759', address: '경기 성남시 분당구 정자동' },
-    { id: 'md', name: '목동점', color: '#FF9500', address: '서울 양천구 목동' },
-  ];
-  const schools = {
-    gn: ['대치중', '단대부중', '휘문고', '숙명여고', '대곡초'],
-    bd: ['내정중', '수내중', '서현고', '낙생고', '정자초'],
-    md: ['목동중', '월촌중', '진명여고', '양정고', '목운초'],
-  };
+  const branches = [{"id": "gn", "name": "본관", "phone": "02-2648-7313", "mapUrl": "https://naver.me/F74V1pxz", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/de935be030f2c.png", "officialCampus": true, "address": "", "color": "#53616f"}, {"id": "bd", "name": "아이비관", "phone": "02-2648-7334", "mapUrl": "https://naver.me/GOPNunF7", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/3ec33420715bf.png", "officialCampus": true, "address": "", "color": "#8e767b"}, {"id": "md", "name": "프리미엄관", "phone": "02-2648-7317", "mapUrl": "https://naver.me/5bVqXURy", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/d24f06ae3e300.png", "officialCampus": true, "address": "", "color": "#b29a79"}, {"id": "ivy-annex", "name": "아이비별관", "phone": "02-2648-5334", "mapUrl": "https://naver.me/GOPNunF7", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/e2295d3ffc62f.png", "officialCampus": true, "address": "", "color": "#53616f"}, {"id": "campus5", "name": "5관", "phone": "02-6956-7317", "mapUrl": "https://naver.me/5bVHoVxN", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/631c760e96651.png", "officialCampus": true, "address": "", "color": "#8e767b"}, {"id": "foreign", "name": "명덕외고관", "phone": "02-6952-7956", "mapUrl": "https://naver.me/5S9hgmL1", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/3a11f79e30152.png", "officialCampus": true, "address": "", "color": "#b29a79"}, {"id": "campus7", "name": "7관", "phone": "02-6925-7363", "mapUrl": "https://naver.me/GeUsaULo", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/783781fe64aa0.png", "officialCampus": true, "address": "", "color": "#53616f"}, {"id": "premium1", "name": "8관 프리미엄1관", "phone": "02-6952-7384", "mapUrl": "https://naver.me/5CW72fbh", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/687009171d1e0.png", "officialCampus": true, "address": "", "color": "#8e767b"}, {"id": "gangseo", "name": "강서관", "phone": "02-6958-7313", "mapUrl": "https://naver.me/GEXEZimV", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/9e0bf2bdcf089.png", "officialCampus": true, "address": "", "color": "#b29a79"}, {"id": "acropolis", "name": "아크로폴리스관", "phone": "02-6952-7316", "mapUrl": "https://naver.me/Fsw7zRzk", "sourceImage": "https://cdn.imweb.me/thumbnail/20260123/c545817b31d0e.png", "officialCampus": true, "address": "", "color": "#53616f"}];
+  const schools = Object.fromEntries(branches.map(b=>[b.id,['목동중','목운중','신목중','월촌중','진명여고','양정고','목운초']]));
   const sur = '김이박최정강조윤장임한오서신권황안송류홍'.split('');
   const given = ['민준', '서연', '도윤', '하은', '시우', '지우', '주원', '서윤', '예준', '지민', '하준', '수아', '지호', '채원', '준우', '지유', '은우', '다은', '현우', '예린', '건우', '소윤', '우진', '가은', '선우', '유나', '연우', '서현', '민재', '윤서', '태윤', '나연'];
   const tNames = ['김수진', '박정훈', '이하나', '최민호', '정유리', '강태현', '윤지혜', '장성민', '한소영', '오준석', '서민아', '신동욱', '권나래', '황재민', '안예슬'];
@@ -2255,7 +2308,7 @@ function seedData() {
   branches.forEach((b, bi) => {
     // 강사 5명
     for (let i = 0; i < 5; i++) {
-      teachers.push({ id: `t-${b.id}-${i}`, branchId: b.id, name: tNames[bi * 5 + i], subject: subjects[i], phone: phone(), role: i === 0 ? '매니저' : '강사' });
+      teachers.push({ id: `t-${b.id}-${i}`, branchId: b.id, name: tNames[(bi * 5 + i) % tNames.length], subject: subjects[i], phone: phone(), role: i === 0 ? '매니저' : '강사' });
     }
     // 반 8개
     for (let i = 0; i < 8; i++) {
@@ -2569,6 +2622,7 @@ const Store = {
   },
 };
 
+const hcCampusBaseLoad=Store.load; Store.load=()=>{hcCampusBaseLoad();HcCampusCatalog.apply(S,HC_OFFICIAL_CAMPUSES,seedData);};
 // ---- 조회 헬퍼 ----
 const TODAY = () => U.ymd(new Date());
 const THIS_MONTH = () => U.ym(new Date());
@@ -10720,5 +10774,82 @@ const acRenderBefore=render;
 render=()=>{acBridge();const rt=route();if(rt.role==='admin'&&!S.aca.settings.showAca&&acIsCommon(rt)){location.hash='#/admin/features';return;}acRenderBefore();if(rt.role!=='admin')return;const main=document.querySelector('#app main');if(main&&!main.querySelector('.ac-modebar'))main.insertAdjacentHTML('afterbegin',`<div class="ac-modebar"><span>${acBadge(acIsCommon(rt)?'공통 업무':'하이씨앤씨 확장')} <span>목업 데이터</span></span><label class="ac-mobile-mode">아카2000 공통 기능<input class="ac-switch" type="checkbox" aria-label="모바일 공통 기능 표시" data-change="acShowCommon" ${S.aca.settings.showAca?'checked':''}></label><a href="#/admin/features">기능 한눈에 보기</a></div>`);if(!S.aca.settings.showAca)document.querySelectorAll('.ac-tabs').forEach(x=>x.remove());};
 // Add an easily discoverable link to the existing workspace without replacing its data.
 const acWorkspaceFull=V['admin/workspace'];V['admin/workspace']=()=>{let html=acWorkspaceFull();if(S.aca.settings.showAca)html=html.replace('<div class="page-head">','<div class="ac-action-row"><a class="btn" href="#/admin/features">공통 업무·확장 요청 한눈에 보기</a></div><div class="page-head">');return html;};
+
+</script><script>
+/* Action counts are derived from the existing workflow records, not a second inbox. */
+(function(root){
+ 'use strict';
+ function collect(state,options={}){
+  const {today,branchId='ALL',role='admin',actorId='owner',actorName='',chatUnread=0,approvals=0,pomeUnread=0,feedback=0}=options;
+  const scoped=rows=>(rows||[]).filter(x=>branchId==='ALL'||x.branchId===branchId);
+  const out={};
+  const put=(page,count,summary,urgent=false)=>{if(count>0)out[page]={count,summary,urgent};};
+  const requests=scoped(state.requests).filter(r=>r.status!=='closed'&&(actorId==='owner'||r.assignee===actorId));
+  put('requests',requests.length,'처리가 끝나지 않은 학부모 요청',requests.some(r=>r.due&&r.due<today));
+  const tasks=scoped(state.tasks).filter(t=>{
+   if(t.status==='done')return false;
+   const issuer=t.issuerId||'owner',assigned=(t.assigneeIds||[]).includes(actorId)||t.assignee===actorId||!!actorName&&t.assignee===actorName;
+   if(t.status==='review')return actorId===issuer||actorId==='owner';
+   return !!t.due&&t.due<=today&&(actorId==='owner'||assigned);
+  });
+  put('tasks',tasks.length,'오늘까지 처리하거나 완료를 확인할 업무',tasks.some(t=>t.due&&t.due<today));
+  put('approvals',approvals,'승인을 기다리는 결재');
+  const calls=scoped(state.calls).filter(c=>c.status==='missed'&&!c.calledBack);
+  put('calls',calls.length,'회신하지 않은 부재중 전화',true);
+  put('crm',scoped(state.consults).filter(c=>c.stage==='신규').length,'아직 상담을 시작하지 않은 신규 문의');
+  const failed=scoped(state.aca?.messageJobs).filter(j=>j.status==='일부 실패').reduce((n,j)=>n+(j.results||[]).filter(r=>r.status==='실패').length,0);
+  put('messages',failed,'실패해 다시 확인할 메시지',true);
+  const diary=scoped(state.aca?.diaries).filter(d=>role==='admin'&&state.aca?.settings?.policyRole!=='강사'?d.status==='제출':d.teacherId===actorId&&d.status==='반려');
+  put('classes',diary.length,role==='admin'?'제출되어 확인을 기다리는 업무일지':'보완 요청을 받은 업무일지');
+  const makeups=scoped(state.makeups).filter(m=>m.status==='todo'&&m.absentDate<=today||m.status==='booked'&&m.slot?.date<=today);
+  put('attendance',makeups.length,'예약하거나 완료를 확인할 보강');
+  const overdue=scoped(state.aca?.loans).filter(l=>l.status==='대여 중'&&l.due<today);
+  put('books',overdue.length,'반납 기한이 지난 교재',true);
+  const circulars=scoped(state.aca?.circulars).filter(c=>c.status==='배포'&&(c.recipients||[]).includes(actorId)&&!(c.reads||[]).includes(actorId)).length;
+  put('chat',chatUnread+circulars,`읽지 않은 대화 ${chatUnread}개${circulars?' · 회람 '+circulars+'개':''}`);
+  put('pome',pomeUnread,'아직 읽지 않은 포메 메시지');
+  put('feedback',feedback,'검토를 기다리는 시연 피드백');
+  return out;
+ }
+ root.HcNavigationNotices={collect};if(typeof module!=='undefined')module.exports=root.HcNavigationNotices;
+})(typeof globalThis!=='undefined'?globalThis:this);
+
+if(typeof document!=='undefined'){
+ let hcNoticeMap={};
+ function hcNoticeRefresh(){
+  const rt=route(),me=chatMe(),actor=rt.role==='teacher'?me.id:hcSelectedActor();
+  hcNoticeMap=HcNavigationNotices.collect(S,{today:TODAY(),branchId:S.branch,role:rt.role,actorId:actor,actorName:teacher(actor)?.name||'',chatUnread:chatUnreadTotal(),approvals:rt.role==='admin'?apItems().length:0,pomeUnread:pm().unread||0,feedback:rt.role==='admin'?FB.pending():0});
+  // Circulation uses the same employee shown in the communication screen.
+  if(actor==='owner'&&me.id!=='owner'){
+   const count=scope(S.aca.circulars).filter(c=>c.status==='배포'&&c.recipients.includes(me.id)&&!c.reads.includes(me.id)).length;
+   if(count){const current=hcNoticeMap.chat?.count||0;hcNoticeMap.chat={count:current+count,summary:`읽지 않은 대화 ${chatUnreadTotal()}개 · 회람 ${count}개`,urgent:false};}
+  }
+ }
+ const hcNoticeBadge=page=>{const n=hcNoticeMap[page];return n?`<span class="hc-notice-badge ${n.urgent?'urgent':''}" data-notice-page="${U.esc(page)}" title="${U.esc(n.summary+' '+n.count+'건')}" aria-label="${U.esc(n.summary+' '+n.count+'건')}">${n.count>99?'99+':n.count}</span>`:'';};
+ badgeFor=hcNoticeBadge;
+ function hcNoticePaint(root=document){
+  const rt=route(),nav=fbNav(rt.role)||[];
+  root.querySelectorAll('.fx-group-items a[href],#msheet .ms-list a[href],#hc-find-results a[href],.fx-directory a[href]').forEach(a=>{
+   const page=a.getAttribute('href').split('/')[2];a.querySelectorAll('.tag,.hc-notice-badge').forEach(x=>x.remove());a.insertAdjacentHTML('beforeend',hcNoticeBadge(page));
+  });
+  root.querySelectorAll('.fx-group-head').forEach(a=>{
+   a.querySelectorAll('.hc-notice-dot').forEach(x=>x.remove());const p=a.getAttribute('href').split('/')[2],group=nav.find(([,items])=>items.some(([id])=>id===p));if(!group)return;
+   const pending=group[1].filter(([id])=>hcNoticeMap[id]);if(!pending.length)return;
+   const message=pending.map(([id,,label])=>label+' '+hcNoticeMap[id].count+'건').join(' · ');
+   a.insertAdjacentHTML('beforeend',`<span class="hc-notice-dot ${pending.some(([id])=>hcNoticeMap[id].urgent)?'urgent':''}" role="img" aria-label="${U.esc(message)}" title="${U.esc(message)}"></span>`);
+  });
+  root.querySelectorAll('#msheet .ms-body>section').forEach(section=>{
+   const h=section.querySelector('h4');if(!h)return;h.querySelector('.hc-notice-dot')?.remove();const has=[...section.querySelectorAll('.hc-notice-badge')];if(has.length)h.insertAdjacentHTML('beforeend',`<span class="hc-notice-dot" role="img" aria-label="확인할 항목이 있는 메뉴 ${has.length}개"></span>`);
+  });
+  const visible=new Set(nav.flatMap(([,items])=>items.map(([id])=>id))),has=Object.keys(hcNoticeMap).some(p=>visible.has(p));
+  root.querySelectorAll('.m-menu').forEach(b=>{b.querySelector('.hc-menu-notice')?.remove();if(has)b.insertAdjacentHTML('beforeend','<i class="hc-menu-notice" aria-label="확인할 알림 있음"></i>');});
+ }
+ const hcNoticeRenderTop=renderTop;
+ renderTop=rt=>{hcNoticeRefresh();hcNoticeRenderTop(rt);hcNoticePaint(document.getElementById('msheet'));hcNoticePaint(document.getElementById('topbar'));};
+ (window.onRendered=window.onRendered||[]).push(()=>{hcNoticeRefresh();hcNoticePaint();});
+ const hcNoticeFinder=A.hcFind;A.hcFind=()=>{hcNoticeFinder();hcNoticePaint();document.querySelector('#hc-find-input')?.addEventListener('input',()=>hcNoticePaint(document.getElementById('modal')));};
+ const hcNoticeCircular=A.acCircularRead;A.acCircularRead=d=>{hcNoticeCircular(d);hcNoticeRefresh();hcNoticePaint();};
+ const hcNoticePmDraw=pmDraw;pmDraw=()=>{hcNoticePmDraw();hcNoticeRefresh();hcNoticePaint();};
+}
 
 </script><script>render();</script></body></html>
