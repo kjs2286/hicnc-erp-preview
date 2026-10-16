@@ -1938,6 +1938,60 @@ main[data-page=students] .fx-student-table tr:hover td:first-child { background:
 [data-theme="dark"] .hc-notice-badge:not(.urgent){background:#49252f;color:#f0b4c0}
 
 .fx-group-head .hc-notice-dot{margin-left:0}
+
+/* Readability refinement: neutral surfaces, clear text and recognizable controls. */
+:root,.phone{--faint:#66717d;--fx-gray-light:#66717d;--fx-active:#e5e9ed;--hair:rgba(36,42,48,.1)}
+:root[data-theme=dark]{--faint:#b0bac4;--fx-gray-light:#b0bac4;--fx-active:#35424c;--hair:rgba(255,255,255,.14)}
+.fx-sidebar.sidebar.fx-refined-side{background:var(--panel-2)}
+.fx-group-head{color:var(--ink);font-weight:600;font-size:14px;min-height:42px}
+.fx-group-head:hover,.fx-group.is-open>.fx-group-head{background:var(--gray-soft)}
+.fx-group-head .fx-nav-label{font-weight:600}
+.fx-group-chevron{display:grid;place-items:center;width:22px;height:22px;flex-basis:22px;border-radius:5px;color:var(--ink);background:var(--panel)}
+.fx-sidebar.sidebar .fx-group-items a{font-size:14px;min-height:38px;color:var(--muted);padding:8px 10px}
+.fx-sidebar.sidebar .fx-group-items a.on{background:var(--fx-active);color:var(--ink);font-weight:700}
+.fx-group-items{padding:6px 0 14px 22px}
+.fx-nav-caption{font-size:12px;color:var(--muted);font-weight:600}
+.fx-brand small,.fx-role-picker small{font-size:12px;color:var(--muted)}
+.fx-context .fx-branch-label select{font-size:14px;color:var(--ink);font-weight:600}
+.fx-nav-utility .fx-icon,.fx-group-head>.fx-icon:first-child{color:var(--muted)}
+.fx-group{margin-bottom:6px}
+.ac-desc,.ac-catalog-card p,.ac-flat td small,.ac-metric>span,.ac-metric small,.ac-toolbar>label,.ac-hint,.ac-modebar,.ac-modebar>a,.ac-history,.ac-sheet dt{color:var(--muted)}
+.ac-desc,.ac-catalog-card p,.ac-hint{font-size:14px}
+.ac-flat td{font-size:14px;line-height:1.6}
+.ac-flat th{font-size:13px;color:var(--muted);font-weight:600;background:var(--panel-2)}
+.ac-flat td small,.ac-metric small,.ac-toolbar>label,.ac-form .field>span,.ac-rail label,.ac-rail small,.ac-catalog-link,.ac-modebar{font-size:12px;color:var(--muted)}
+.ac-tabs a{font-size:14px;color:var(--muted);min-height:38px}
+.ac-tabs a.on{background:var(--fx-active);color:var(--ink);font-weight:700}
+.ac-catalog-card,.ac-sheet,.ac-metric{background:var(--panel);color:var(--ink)}
+.ac-metric strong{color:var(--ink)}
+.ac-rail{background:var(--gray-soft);margin:8px 0 12px;padding:12px}
+.btn{min-height:38px;font-size:14px}.btn.sm{min-height:32px;font-size:12px}
+.input{font-size:14px;min-height:40px}
+.input::placeholder{color:var(--muted);opacity:1}
+.table-wrap table th{color:var(--muted);font-weight:600}
+.table-wrap table td{line-height:1.65}
+.ad-demo{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--panel-2);border-radius:8px;font-size:13px;color:var(--muted);margin-bottom:20px}
+.ad-student-bar{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.ad-student-bar label{display:grid;gap:8px;font-size:13px;font-weight:600;min-width:260px}
+.ad-tabs{display:flex;gap:4px;flex-wrap:wrap;padding:4px;margin-bottom:28px;border-radius:8px;background:var(--panel-2)}
+.ad-tabs a{padding:10px 16px;border-radius:6px;color:var(--muted);font-size:14px;font-weight:550}
+.ad-tabs a[aria-current=page]{background:var(--fx-active);color:var(--ink);font-weight:700}
+.ad-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}.ad-panel{padding:24px;border:1px solid var(--line);background:var(--panel);border-radius:8px;min-width:0}
+.ad-panel h3,.ad-section-head h3{margin:0;font-size:17px;color:var(--ink)}
+.ad-section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.ad-helper{font-size:13px;line-height:1.7;color:var(--muted);margin:8px 0 0}
+.ad-goal{font-size:17px;line-height:1.7;font-weight:600;margin:20px 0}
+.ad-facts{display:grid;grid-template-columns:85px 1fr;gap:14px;font-size:14px}.ad-facts dt{color:var(--muted)}.ad-facts dd{margin:0;line-height:1.6}
+.ad-links{display:flex;gap:8px;flex-wrap:wrap}.ad-last{margin-top:20px}
+.ad-progress{height:10px;border-radius:10px;background:var(--gray-soft);overflow:hidden}.ad-progress span{display:block;height:100%;border-radius:10px;background:var(--ink)}
+.ad-event-list{padding:0;margin:0;list-style:none}.ad-event-list li{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:15px 0;border-bottom:1px solid var(--hair)}.ad-event-list li:last-child{border-bottom:0}.ad-event-list strong{flex:1;min-width:130px;font-size:14px}.ad-date{font-size:13px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.ad-search{display:grid;gap:8px;font-size:13px;max-width:400px;margin-bottom:20px}.ad-school-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:28px}.ad-school-grid h3{margin:12px 0}.ad-school-grid .btn{margin-top:18px}.ad-eyebrow{color:var(--muted);font-size:12px;font-weight:600}
+.ad-empty{display:grid;justify-items:start;gap:10px;padding:16px 0;color:var(--muted);font-size:14px}.ad-empty p{margin:0 0 4px}
+.ad-notes{display:grid;gap:16px}.ad-note-text{white-space:pre-wrap;line-height:1.8;font-size:14px}.ad-next{background:var(--panel-2);padding:16px;border-radius:6px;margin-top:20px;font-size:14px;line-height:1.7}.ad-next p{margin:6px 0 0;white-space:pre-wrap}
+.ad-discovery{padding:20px 24px;border:1px solid var(--line);border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:28px}.ad-discovery>div{display:flex;align-items:center;gap:14px}.ad-discovery h3{font-size:16px;margin:0}.ad-discovery p{font-size:13px;color:var(--muted);margin:6px 0 0}
+.ad-content .ac-flat td{white-space:normal;overflow-wrap:anywhere}.ad-content .ac-flat td .btn{white-space:nowrap}
+@media(max-width:900px){.ad-grid{grid-template-columns:1fr}.ad-school-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.ad-student-bar label{min-width:0;width:100%}.ad-student-bar select{max-width:100%}.ad-tabs a{font-size:13px;padding:9px 11px}.ad-panel{padding:18px}.ad-school-grid{grid-template-columns:1fr}.ad-demo{align-items:start}.ad-content .ac-metrics{grid-template-columns:1fr 1fr}.ad-content .ac-metric{padding:18px 16px}.ad-event-list strong{min-width:100%}.ad-discovery{padding:18px}.ac-tabs a{font-size:13px}}
 </style></head>
 <body>
 <header class="topbar" id="topbar">
@@ -10874,5 +10928,59 @@ if(typeof document!=='undefined'){
  const hcNoticeCircular=A.acCircularRead;A.acCircularRead=d=>{hcNoticeCircular(d);hcNoticeRefresh();hcNoticePaint();};
  const hcNoticePmDraw=pmDraw;pmDraw=()=>{hcNoticePmDraw();hcNoticeRefresh();hcNoticePaint();};
 }
+
+</script><script>
+/* Meeting 01:16–01:18: school, admissions and credits in the ERP.
+   Independent demonstration; the external consulting product is not connected. */
+(function(root){
+ 'use strict';
+ const totals=rows=>rows.reduce((a,r)=>{const n=Number(r.credits);if(Number.isFinite(n)&&n>0){a.total+=n;if(r.status==='이수')a.completed+=n;else if(r.status==='수강 중')a.current+=n;else a.planned+=n;}return a;},{total:0,completed:0,current:0,planned:0});
+ const validate=v=>!String(v.subject||'').trim()?'과목명을 입력해 주세요.':!Number.isInteger(+v.credits)||+v.credits<1||+v.credits>20?'학점은 1~20 사이 정수로 입력해 주세요.':!['계획','수강 중','이수'].includes(v.status)?'이수 상태를 확인해 주세요.':'';
+ root.HcAdmissions={totals,validate};
+ if(typeof V==='undefined')return;
+ const tabs=[['overview','상담 개요'],['schools','학교 정보'],['schedule','입시 일정'],['credits','과목·학점'],['notes','상담 기록']];
+ function ensure(){S.admissions=S.admissions||{students:{}};S.admissions.students=S.admissions.students||{};}
+ function selected(){return acStudents().find(s=>s.id===ui.admissionStudent)||acStudents()[0];}
+ function record(s){
+  ensure();if(!s)return null;
+  if(!S.admissions.students[s.id])S.admissions.students[s.id]={goal:'진학 목표를 상담에서 정해 주세요.',target:30,interests:[],courses:[],events:[],notes:[]};
+  return S.admissions.students[s.id];
+ }
+ const link=(tab,label)=>`<a class="btn" href="#/admin/school-admissions/${tab}">${label} ${fxIcon('chevronright',14)}</a>`;
+ function empty(label){return `<div class="ad-empty">${fxIcon('book',24)}<p>${label}</p><button class="btn" data-action="adExamples">선택 학생에게 시연 예시 넣기</button></div>`;}
+ function overview(s,r){const n=totals(r.courses),pending=r.events.filter(e=>!e.done),next=pending.slice().sort((a,b)=>a.date.localeCompare(b.date))[0];
+  return acMetrics([['관심 학교',r.interests.length+'곳','학생별 관심 목록'],['다가오는 일정',pending.length+'건',next?next.date+' · '+next.title:'등록된 일정 없음'],['이수 학점',n.completed+' / '+r.target,'상담용 목표 · 졸업 기준 아님'],['상담 기록',r.notes.length+'건','합의 내용과 다음 행동']])+`<div class="ad-grid"><section class="ad-panel"><div class="ad-section-head"><h3>학생의 진학 방향</h3>${acButton('목표 수정','adGoal')}</div><p class="ad-goal">${acEsc(r.goal)}</p><dl class="ad-facts"><dt>현재 학교</dt><dd>${acEsc(s.school||'미입력')}</dd><dt>학년</dt><dd>${acEsc(s.grade)}</dd><dt>관심 학교</dt><dd>${acEsc(r.interests.map(x=>x.name).join(', ')||'학교 정보에서 관심 학교를 추가하세요.')}</dd></dl><div class="ad-links">${link('schools','학교 살펴보기')}<button class="btn" data-action="adGrades">학교 내신·모의고사 보기</button></div></section><section class="ad-panel"><div class="ad-section-head"><h3>다음에 할 일</h3>${link('schedule','전체 일정')}</div>${pending.length?`<ul class="ad-event-list">${pending.slice().sort((a,b)=>a.date.localeCompare(b.date)).slice(0,4).map(e=>`<li><span class="ad-date">${acEsc(e.date)}</span><strong>${acEsc(e.title)}</strong>${acButton('완료','adEventDone',{id:e.id})}</li>`).join('')}</ul>`:empty('설명회·원서 접수·상담 일정을 함께 관리하세요.')}</section></div><section class="ad-panel ad-last"><div class="ad-section-head"><h3>과목 선택과 학점 계획</h3>${link('credits','과목·학점 보기')}</div><div class="ad-progress" role="progressbar" aria-label="상담용 목표 대비 이수 학점" aria-valuemin="0" aria-valuemax="${r.target}" aria-valuenow="${Math.min(n.completed,r.target)}"><span style="width:${Math.min(100,n.completed/r.target*100)}%"></span></div><p class="ad-helper">이수 ${n.completed}학점 · 수강 중 ${n.current}학점 · 계획 ${n.planned}학점. 실제 학교별 졸업·입시 요건은 별도로 확인합니다.</p></section>`;
+ }
+ function schools(s,r){const q=(ui.adSchoolQuery||'').trim(),names=[...new Set(S.students.map(x=>x.school).filter(Boolean))].filter(name=>!q||name.includes(q));
+  return `<div class="ad-section-head"><div><h3>학교 정보와 관심 목록</h3><p class="ad-helper">ERP에 등록된 학교명입니다. 입학 정보는 직접 확인한 내용을 기록하세요.</p></div>${acButton('관심 학교 추가','adSchoolNew',{},true)}</div><label class="ad-search">학교 검색<input class="input" aria-label="학교 이름 검색" data-change="adSchoolQuery" value="${acEsc(q)}" placeholder="학교 이름을 입력하세요"></label><div class="ad-school-grid">${names.map(name=>{const found=r.interests.some(x=>x.name===name);return `<article class="ad-panel"><span class="ad-eyebrow">등록 학교</span><h3>${acEsc(name)}</h3><p class="ad-helper">학교 주소·유형·모집 정보 미연결</p><button class="btn ${found?'':'primary'}" data-action="adSchoolPick" data-name="${acEsc(name)}" ${found?'disabled':''}>${found?'관심 학교에 추가됨':'관심 학교에 추가'}</button></article>`;}).join('')||'<p class="empty">검색된 학교가 없습니다. 관심 학교를 직접 추가할 수 있습니다.</p>'}</div><div class="ad-section-head"><h3>${acEsc(s.name)} 학생의 관심 학교</h3><span>${r.interests.length}곳</span></div>${acTable(['학교','관심 전공·과정','확인할 내용',''],r.interests.map(x=>`<tr><td><strong>${acEsc(x.name)}</strong></td><td>${acEsc(x.major||'미정')}</td><td>${acEsc(x.note||'상담에서 확인')}</td><td>${acButton('수정','adSchoolEdit',{id:x.id})}</td></tr>`))}`;
+ }
+ function schedule(r){return `<div class="ad-section-head"><div><h3>입시와 상담 일정</h3><p class="ad-helper">직접 등록한 일정입니다. 실제 모집 일정과 자동 연결되지 않습니다.</p></div>${acButton('일정 추가','adEventNew',{},true)}</div>${acTable(['일정','날짜','구분','상태',''],r.events.slice().sort((a,b)=>a.date.localeCompare(b.date)).map(e=>`<tr><td><b>${acEsc(e.title)}</b><small>${acEsc(e.note)}</small></td><td>${acEsc(e.date)}</td><td>${acEsc(e.kind)}</td><td>${acBadge(e.done?'완료':e.date<TODAY()?'기한 확인':'예정',e.done?'green':e.date<TODAY()?'red':'')}</td><td>${acButton('수정','adEventEdit',{id:e.id})}${acButton(e.done?'예정으로':'완료','adEventDone',{id:e.id})}</td></tr>`),'등록된 일정이 없습니다. 일정 추가 또는 시연 예시를 사용하세요.')}`;}
+ function credits(r){const n=totals(r.courses);return acMetrics([['이수',n.completed+'학점','이수 상태인 과목만 합산'],['수강 중',n.current+'학점','이수 학점에 포함하지 않음'],['선택 계획',n.planned+'학점','아직 수강 전인 과목'],['목표까지',Math.max(0,r.target-n.completed)+'학점','상담용 목표 '+r.target+'학점']])+`<div class="ad-section-head"><div><h3>과목 선택 계획</h3><p class="ad-helper">선택 이유와 이수 상태를 함께 관리합니다. 공식 학점 이수 판정 기능은 연결 전입니다.</p></div><div class="ad-links">${acButton('목표 설정','adGoal')}${acButton('과목 추가','adCourseNew',{},true)}</div></div>${acTable(['학기','과목','학점','상태','선택 이유',''],r.courses.map(c=>`<tr><td>${acEsc(c.term)}</td><td><b>${acEsc(c.subject)}</b><small>${acEsc(c.area)}</small></td><td>${c.credits}</td><td>${acBadge(c.status,c.status==='이수'?'green':'')}</td><td>${acEsc(c.reason)}</td><td>${acButton('수정','adCourseEdit',{id:c.id})}</td></tr>`),'선택한 과목이 없습니다. 과목 추가 또는 시연 예시를 사용하세요.')}`;}
+ function notes(r){return `<div class="ad-section-head"><div><h3>입시 상담 기록</h3><p class="ad-helper">상담 내용·합의 사항·다음 행동을 학생별로 이어서 기록합니다.</p></div>${acButton('상담 기록 작성','adNoteNew',{},true)}</div>${r.notes.length?`<div class="ad-notes">${r.notes.slice().reverse().map(n=>`<article class="ad-panel"><div class="ad-section-head"><h3>${acEsc(n.topic)}</h3><span class="ad-helper">${acEsc(n.date)} · ${acEsc(n.counselor)}</span></div><p class="ad-note-text">${acEsc(n.content)}</p><div class="ad-next"><b>다음 행동</b><p>${acEsc(n.next)}</p></div></article>`).join('')}</div>`:empty('첫 상담 내용을 기록해 보세요.')}`;}
+ V['admin/school-admissions']=arg=>{
+  const s=selected(),tab=tabs.some(([id])=>id===arg)?arg:'overview',r=record(s);
+  return acHead('학교·입시·학점','학생의 학교 정보부터 진학 상담, 과목 선택까지 한곳에서',s?acButton('시연 예시 불러오기','adExamples'):'')+`<div class="ad-demo">${fxIcon('info',16)}<span>입시 상담 목업 · 외부 입시 시스템·실제 모집요강 미연결</span></div><div class="ad-student-bar"><label>상담 학생<select class="input" aria-label="입시 상담 학생" data-change="adStudent">${acStudents().map(x=>`<option value="${x.id}" ${x.id===s?.id?'selected':''}>${acEsc(x.name)} · ${acEsc(x.grade)} · ${acEsc(x.school||'학교 미입력')}</option>`).join('')}</select></label>${s?`<a class="btn" href="#/admin/student/${s.id}">학생 상세</a><button class="btn" data-action="adGrades">학교 성적</button>`:''}</div><nav class="ad-tabs" aria-label="학교 입시 학점 메뉴">${tabs.map(([id,label])=>`<a href="#/admin/school-admissions/${id}" ${tab===id?'aria-current="page"':''}>${label}</a>`).join('')}</nav><div class="ad-content">${!s?'<p class="empty">선택한 관에 상담할 학생이 없습니다.</p>':tab==='schools'?schools(s,r):tab==='schedule'?schedule(r):tab==='credits'?credits(r):tab==='notes'?notes(r):overview(s,r)}</div>`;
+ };
+ NAV.admin.find(([name])=>name==='수업·학습')[1].splice(1,0,['school-admissions','building','학교·입시·학점']);FX_PAGE_ICONS['school-admissions']='building';
+ A.adStudent=v=>{ui.admissionStudent=v;rerender();};A.adSchoolQuery=v=>{ui.adSchoolQuery=v;rerender();};
+ A.adGrades=()=>{const s=selected();if(!s)return;ui.hcSchoolStudent=s.id;ui.hcSchoolOnly=true;if(S.aca.settings.showAca===false){U.toast('학교 성적은 아카2000 공통 기능 표시를 켜면 볼 수 있습니다.');return;}S.navGroups=S.navGroups||{};S.navGroups.admin=S.navGroups.admin||{};S.navGroups.admin['수업·학습']=true;Store.save();location.hash='#/admin/school-grades';};
+ function formFor(callback){const s=selected();if(s)callback(s,record(s));}
+ A.adGoal=()=>formFor((s,r)=>acForm('진학 방향과 상담용 학점 목표',[{...acField('goal','진학 방향','textarea',r.goal),required:true},{...acField('target','상담용 목표 학점','number',r.target),required:true,min:1,max:300}],v=>{if(!Number.isInteger(+v('target')))throw Error('목표 학점은 정수로 입력하세요.');r.goal=v('goal');r.target=+v('target');},'<p class="ad-helper">학교별 졸업 요건이 아닌 학생 상담용 목표입니다.</p>'));
+ function schoolForm(x){formFor((s,r)=>acForm(x?'관심 학교 수정':'관심 학교 추가',[{...acField('name','학교명','text',x?.name||''),required:true},acField('major','관심 전공·과정','text',x?.major||''),acField('note','확인할 내용','textarea',x?.note||'')],v=>{if(r.interests.some(i=>i!==x&&i.name===v('name')))throw Error('이미 추가된 관심 학교입니다.');const value={name:v('name'),major:v('major'),note:v('note')};if(x)Object.assign(x,value);else r.interests.push({id:U.uid('interest'),...value});}));}
+ A.adSchoolNew=()=>schoolForm();A.adSchoolEdit=d=>formFor((s,r)=>schoolForm(r.interests.find(x=>x.id===d.id)));
+ A.adSchoolPick=d=>formFor((s,r)=>{if(!r.interests.some(x=>x.name===d.name))r.interests.push({id:U.uid('interest'),name:d.name,major:'',note:''});Store.save();rerender();});
+ function eventForm(x){formFor((s,r)=>acForm(x?'일정 수정':'입시·상담 일정 추가',[{...acField('title','일정 이름','text',x?.title||''),required:true},{...acField('date','날짜','date',x?.date||TODAY()),required:true},acField('kind','구분','select',x?.kind||'상담',['상담','설명회','원서 접수','서류 준비','면접','기타']),acField('note','준비할 내용','textarea',x?.note||'')],v=>{const value={title:v('title'),date:v('date'),kind:v('kind'),note:v('note')};if(x)Object.assign(x,value);else r.events.push({id:U.uid('ad-event'),...value,done:false});}));}
+ A.adEventNew=()=>eventForm();A.adEventEdit=d=>formFor((s,r)=>eventForm(r.events.find(x=>x.id===d.id)));A.adEventDone=d=>formFor((s,r)=>{const e=r.events.find(x=>x.id===d.id);if(e)e.done=!e.done;Store.save();rerender();});
+ function courseForm(x){formFor((s,r)=>acForm(x?'선택 과목 수정':'선택 과목 추가',[{...acField('subject','과목명','text',x?.subject||''),required:true},acField('area','영역','select',x?.area||'진로 선택',['공통','일반 선택','진로 선택','융합 선택','기타']),{...acField('term','학년·학기','text',x?.term||'1학년 2학기'),required:true},{...acField('credits','학점','number',x?.credits||3),required:true,min:1,max:20},acField('status','이수 상태','select',x?.status||'계획',['계획','수강 중','이수']),acField('reason','선택 이유','textarea',x?.reason||'')],v=>{const value={subject:v('subject'),area:v('area'),term:v('term'),credits:+v('credits'),status:v('status'),reason:v('reason')},error=validate(value);if(error)throw Error(error);if(r.courses.some(c=>c!==x&&c.subject===value.subject&&c.term===value.term))throw Error('같은 학기에 같은 과목이 이미 있습니다.');if(x)Object.assign(x,value);else r.courses.push({id:U.uid('course'),...value});}));}
+ A.adCourseNew=()=>courseForm();A.adCourseEdit=d=>formFor((s,r)=>courseForm(r.courses.find(x=>x.id===d.id)));
+ A.adNoteNew=()=>formFor((s,r)=>acForm('입시 상담 기록',[{...acField('topic','상담 주제'),required:true},{...acField('date','상담일','date',TODAY()),required:true},{...acField('counselor','상담자','text','상담 담당'),required:true},{...acField('content','상담 내용','textarea'),required:true},{...acField('next','다음 행동','textarea'),required:true}],v=>r.notes.push({id:U.uid('ad-note'),topic:v('topic'),date:v('date'),counselor:v('counselor'),content:v('content'),next:v('next')})));
+ A.adExamples=()=>formFor((s,r)=>{if(r.exampleLoaded){U.toast('이미 불러온 예시입니다. 기존 기록을 유지합니다.');return;}r.exampleLoaded=true;
+  r.interests.push({id:U.uid('interest'),name:'미래고등학교 · 시연',major:'외국어·국제 계열 탐색',note:'가상 학교 예시 · 실제 모집 정보 아님'});
+  r.courses.push(...[['영어 독해와 작문','이수',4],['영미 문학 읽기','수강 중',3],['국제 관계의 이해','계획',3]].map(([subject,status,credits])=>({id:U.uid('course'),subject,status,credits,term:'1학년 2학기',area:'진로 선택',reason:'관심 분야를 탐색하는 시연 과목'})));
+  r.events.push({id:U.uid('ad-event'),title:'진학 방향 상담 · 시연',date:acDate(3),kind:'상담',done:false,note:'관심 학교와 과목 선택 질문 준비'},{id:U.uid('ad-event'),title:'학교 설명회 확인 · 시연',date:acDate(10),kind:'설명회',done:false,note:'실제 설명회 일정이 아닌 목업'});
+  r.notes.push({id:U.uid('ad-note'),topic:'관심 분야와 과목 선택 · 시연',date:TODAY(),counselor:'상담 담당 · 시연',content:'외국어와 국제 분야에 관심이 있다는 가상 상담 예시입니다.',next:'학생과 관심 과목을 정리하고 실제 학교의 개설 과목을 확인합니다.'});Store.save();rerender();U.toast('선택 학생에게만 시연 예시를 추가했습니다.');});
+ // Keep the meeting's 21-item spreadsheet list unchanged; expose the separate integration mock.
+ const catalogBefore=acFeatureCatalog;acFeatureCatalog=()=>`<section class="ad-discovery"><div>${fxIcon('building',22)}<div><h3>학교·입시·학점</h3><p>학교 정보 · 입시 일정 · 선택 과목 · 상담 기록</p></div></div><a class="btn" href="#/admin/school-admissions">입시 상담 열기 ${fxIcon('chevronright',14)}</a></section>`+catalogBefore();V['admin/features']=acFeatureCatalog;
+})(typeof window!=='undefined'?window:globalThis);
 
 </script><script>render();</script></body></html>
